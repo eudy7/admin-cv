@@ -1,0 +1,36 @@
+<div class="container color-dark">
+  <div class="col">
+    <p>Personal Information</p>
+  </div>
+</div>
+
+<div class="container color-light">
+  <div class="col">
+    <form>
+      <input type="text" class="txt" name="name" placeholder="Full name" [(ngModel)]="myHeader.name"><br>
+      <input type="email" class="txt" name="email" placeholder="Email" [(ngModel)]="myHeader.email"><br>
+      <input type="tel" class="txt" name="phoneNumber" placeholder="Phone number" [(ngModel)]="myHeader.phoneNumber"><br>
+      <input type="text" class="txt" name="location" placeholder="Location" [(ngModel)]="myHeader.location"><br>
+      <input type="text" class="txt" name="goallife" placeholder="Life goal" [(ngModel)]="myHeader.goallife"><br>
+      <input type="url" class="txt" name="photourl" placeholder="Photo URL" [(ngModel)]="myHeader.photourl"><br>
+      <input type="text" class="txt" name="socialNetwork" placeholder="Social network" [(ngModel)]="myHeader.socialNetwork"><br>
+      
+      <input type="submit" class="btn" value="{{ btntxt }}" (click)="saveHeader()">
+    </form>
+  </div>
+
+  <div class="col">
+    <div *ngFor="let header of headers" class="life-container">
+      <input type="submit" class="btn" value="delete" (click)="deleteHeader(header.id)">
+      
+      <div *ngIf="header.photourl">
+        <img [src]="header.photourl" alt="Profile" style="width: 100px;">
+      </div>
+      
+      <h3>{{ header.name }}</h3>
+      <p>{{ header.email }}</p>
+      <p>{{ header.phoneNumber }}</p>
+      <p>{{ header.location }}</p>
+    </div>
+  </div>
+</div>

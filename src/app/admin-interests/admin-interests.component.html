@@ -1,0 +1,23 @@
+<div class="container color-dark">
+  <div class="col">
+    <p>interests items</p>
+  </div>
+</div>
+
+<div class="container color-light">
+  <div class="col">
+    <form>
+      <input type="text" class="txt" name="interestName" placeholder="Interest Name" [(ngModel)]="myInterest.interestName"><br>
+      <input type="text" class="txt" name="description" placeholder="Description" [(ngModel)]="myInterest.description"><br>
+
+      <input type="submit" class="btn" value="{{ btnTxt }}" (click)="agregarInterest()">
+    </form>
+  </div>
+
+  <div class="col">
+    <p class="life-container" *ngFor="let interest of interestsList">
+      <input *ngIf="interest.id" type="submit" class="btn" value="delete" (click)="deleteInterest(interest.id)">
+      {{ interest.interestName }} - {{ interest.description }}
+    </p>
+  </div>
+</div>

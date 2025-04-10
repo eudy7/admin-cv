@@ -1,0 +1,27 @@
+<div class="container color-dark">
+  <div class="col">
+    <p>education items</p>
+  </div>
+</div>
+
+<div class="container color-light">
+  <div class="col">
+    <form>
+      <input type="text" class="txt" name="degree" placeholder="Degree" [(ngModel)]="myEducation.degree"><br>
+      <input type="text" class="txt" name="fieldOfStudy" placeholder="Field of study" [(ngModel)]="myEducation.fieldOfStudy"><br>
+      <input type="text" class="txt" name="institution" placeholder="Institution" [(ngModel)]="myEducation.institution"><br>
+      <input type="text" class="txt" name="startDate" placeholder="Start date (mmm/yyyy)" [(ngModel)]="myEducation.startDate"><br>
+      <input type="text" class="txt" name="endDate" placeholder="End date (mmm/yyyy)" [(ngModel)]="myEducation.endDate"><br>
+      <input type="text" class="txt" name="accomplishments" placeholder="Accomplishments" [(ngModel)]="myEducation.accomplishments"><br>
+
+      <input type="submit" class="btn" value="{{ btnTxt }}" (click)="agregarEducation()">
+    </form>
+  </div>
+
+  <div class="col">
+    <p class="life-container" *ngFor="let education of educationList">
+      <input *ngIf="education.id" type="submit" class="btn" value="delete" (click)="deleteEducation(education.id)">
+      {{ education.degree }} - {{ education.institution }} ({{ education.startDate }} - {{ education.endDate }})
+    </p>
+  </div>
+</div>

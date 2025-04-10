@@ -1,0 +1,25 @@
+<div class="container color-dark">
+  <div class="col">
+    <p>certificates items</p>
+  </div>
+</div>
+
+<div class="container color-light">
+  <div class="col">
+    <form>
+      <input type="text" class="txt" name="name" placeholder="Certificate Name" [(ngModel)]="myCertificate.name"><br>
+      <input type="text" class="txt" name="issuingOrganization" placeholder="Issuing Organization" [(ngModel)]="myCertificate.issuingOrganization"><br>
+      <input type="text" class="txt" name="issueDate" placeholder="Issue Date (mmm/yyyy)" [(ngModel)]="myCertificate.issueDate"><br>
+      <input type="text" class="txt" name="expirationDate" placeholder="Expiration Date (mmm/yyyy)" [(ngModel)]="myCertificate.expirationDate"><br>
+
+      <input type="submit" class="btn" value="{{ btnTxt }}" (click)="agregarCertificates()">
+    </form>
+  </div>
+
+  <div class="col">
+    <p class="life-container" *ngFor="let certificate of certificatesList">
+      <input *ngIf="certificate.id" type="submit" class="btn" value="delete" (click)="deleteCertificates(certificate.id)">
+      {{ certificate.name }} - {{ certificate.issuingOrganization }} ({{ certificate.issueDate }} - {{ certificate.expirationDate }})
+    </p>
+  </div>
+</div>
