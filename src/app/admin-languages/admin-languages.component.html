@@ -1,0 +1,33 @@
+<div class="form-container">
+  <h2><i class="fas fa-language"></i> Languages</h2>
+  <form (ngSubmit)="saveLanguage()">
+    <input type="text" placeholder="Language Name"
+           [(ngModel)]="myLanguage.name" name="name" required />
+    <input type="text" placeholder="Proficiency"
+           [(ngModel)]="myLanguage.proficiency" name="proficiency" required />
+    <input type="text" placeholder="Certification"
+           [(ngModel)]="myLanguage.certification" name="certification" required />
+    <button class="btn btn-primary" type="submit">
+      <i class="fas fa-save"></i>
+      {{ myLanguage.id ? 'Actualizar' : 'Guardar' }}
+    </button>
+  </form>
+</div>
+
+<div class="card-container">
+  <div class="card" *ngFor="let item of languages">
+    <div class="card-body">
+      <h3>{{ item.name }}</h3>
+      <p><strong>Proficiency:</strong> {{ item.proficiency }}</p>
+      <p><strong>Certification:</strong> {{ item.certification }}</p>
+    </div>
+    <div class="button-row">
+      <button class="btn btn-warning" (click)="editLanguage(item)">
+        <i class="fas fa-edit"></i> Editar
+      </button>
+      <button class="btn btn-danger" (click)="deleteLanguage(item.id)">
+        <i class="fas fa-trash-alt"></i> Eliminar
+      </button>
+    </div>
+  </div>
+</div>

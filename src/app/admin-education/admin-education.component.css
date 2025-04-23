@@ -1,0 +1,71 @@
+.form-container {
+  background: #fff;
+  border-radius: 0.5rem;
+  padding: 2rem;
+  max-width: 600px;
+  margin: 2rem auto;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.form-container h2 {
+  text-align: center;
+  color: #007bff;
+  margin-bottom: 1.5rem;
+}
+
+.education-form input,
+.education-form textarea {
+  width: 100%;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 0.25rem;
+  font-size: 1rem;
+  color: #333;
+  background: #f9f9f9;
+}
+
+.education-form .btn {
+  display: block;
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 1.1rem;
+}
+
+.card-container {
+  max-width: 800px;
+  margin: 2rem auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.card {
+  background: #fff;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  padding: 1.5rem;
+  position: relative;
+}
+
+.card-body {
+  color: #333;
+}
+
+.card-body .degree {
+  margin: 0 0 0.5rem;
+  color: #007bff;
+}
+
+.card-body .subtitle {
+  margin: 0 0 1rem;
+  font-style: italic;
+  color: #555;
+}
+
+.button-row {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}

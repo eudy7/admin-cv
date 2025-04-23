@@ -1,0 +1,41 @@
+<div class="form-container">
+  <h2><i class="fas fa-id-card"></i> Personal Information</h2>
+
+  <form>
+    <input type="text" placeholder="Full name" [(ngModel)]="myHeader.name" name="name" />
+    <input type="text" placeholder="Email" [(ngModel)]="myHeader.email" name="email" />
+    <input type="text" placeholder="Phone number" [(ngModel)]="myHeader.phoneNumber" name="phoneNumber" />
+    <input type="text" placeholder="Location" [(ngModel)]="myHeader.location" name="location" />
+    <input type="text" placeholder="Life goal" [(ngModel)]="myHeader.goalLife" name="goalLife" />
+    <input type="text" placeholder="Social network" [(ngModel)]="myHeader.socialNetwork" name="socialNetwork" />
+    <input type="text" placeholder="Photo URL" [(ngModel)]="myHeader.photoUrl" name="photoUrl" />
+
+    <button class="btn btn-primary" type="button" (click)="saveHeader()">
+      <i class="fas fa-save"></i> {{ myHeader.id ? 'Actualizar' : 'Guardar' }}
+    </button>
+  </form>
+</div>
+
+<div class="card-container">
+  <div class="card" *ngFor="let item of headers">
+    <div class="card-header">
+      <img [src]="item.photoUrl" alt="Foto" class="profile-img" />
+    </div>
+    <div class="card-body">
+      <h3>{{ item.name }}</h3>
+      <p><strong>Email:</strong> {{ item.email }}</p>
+      <p><strong>Teléfono:</strong> {{ item.phoneNumber }}</p>
+      <p><strong>Ubicación:</strong> {{ item.location }}</p>
+      <p><strong>Objetivo:</strong> {{ item.goalLife }}</p>
+      <p><strong>Red social:</strong> {{ item.socialNetwork }}</p>
+    </div>
+    <div class="button-row">
+      <button class="btn btn-warning" (click)="editHeader(item)">
+        <i class="fas fa-edit"></i> Editar
+      </button>
+      <button class="btn btn-danger" (click)="deleteHeader(item.id)">
+        <i class="fas fa-trash-alt"></i> Eliminar
+      </button>
+    </div>
+  </div>
+</div>

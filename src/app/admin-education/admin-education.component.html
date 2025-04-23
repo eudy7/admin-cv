@@ -1,0 +1,74 @@
+<div class="form-container">
+  <h2><i class="fas fa-graduation-cap"></i> Education</h2>
+
+  <form class="education-form">
+    <input
+      type="text"
+      placeholder="Degree"
+      [(ngModel)]="myEducation.degree"
+      name="degree"
+    />
+
+    <input
+      type="text"
+      placeholder="Field of study"
+      [(ngModel)]="myEducation.fieldOfStudy"
+      name="fieldOfStudy"
+    />
+
+    <input
+      type="text"
+      placeholder="Institution"
+      [(ngModel)]="myEducation.institution"
+      name="institution"
+    />
+
+    <input
+      type="text"
+      placeholder="Start date (mmm/yyyy)"
+      [(ngModel)]="myEducation.startDate"
+      name="startDate"
+    />
+
+    <input
+      type="text"
+      placeholder="End date (mmm/yyyy)"
+      [(ngModel)]="myEducation.endDate"
+      name="endDate"
+    />
+
+    <textarea
+      placeholder="Accomplishments"
+      [(ngModel)]="myEducation.accomplishments"
+      name="accomplishments"
+      rows="3"
+    ></textarea>
+
+    <button class="btn btn-primary" type="button" (click)="saveEducation()">
+      <i class="fas fa-save"></i>
+      {{ myEducation.id ? 'Actualizar' : 'Guardar' }}
+    </button>
+  </form>
+</div>
+
+<div class="card-container">
+  <div class="card" *ngFor="let item of educations">
+    <div class="card-body">
+      <h3 class="degree">{{ item.degree }}</h3>
+      <p class="subtitle">
+        <strong>{{ item.startDate }} &ndash; {{ item.endDate }}</strong>
+        &nbsp;|&nbsp;{{ item.institution }}
+      </p>
+      <p><strong>Field of study:</strong> {{ item.fieldOfStudy }}</p>
+      <p><strong>Accomplishments:</strong><br/>{{ item.accomplishments }}</p>
+    </div>
+    <div class="button-row">
+      <button class="btn btn-warning" (click)="editEducation(item)">
+        <i class="fas fa-edit"></i> Editar
+      </button>
+      <button class="btn btn-danger" (click)="deleteEducation(item.id)">
+        <i class="fas fa-trash-alt"></i> Eliminar
+      </button>
+    </div>
+  </div>
+</div>
