@@ -1,50 +1,61 @@
-import { Component } from '@angular/core';
-import { LanguagesService } from '../services/languages-service/languages.service';
-import { Languages } from '../models/languages/languages.model';
+import { Component, OnInit } from '@angular/core';
 import { map } from 'rxjs/operators';
+import { Language } from '../models/languages/languages.model';
+import { LanguagesService } from '../services/languages-service/languages.service';
 
 @Component({
   selector: 'app-admin-languages',
   templateUrl: './admin-languages.component.html',
   styleUrls: ['./admin-languages.component.css']
 })
-export class AdminLanguagesComponent {
-  btnTxt: string = "Agregar";
-  languagesList: Languages[] = [];
-  myLanguage: Languages = new Languages();
+export class AdminLanguagesComponent implements OnInit {
+  languages: Language[] = [];
+  myLanguage: Language = this.resetLanguage();
 
-  constructor(public languagesService: LanguagesService) {
-    console.log(this.languagesService);
+  constructor(private langSvc: LanguagesService) {}
 
-    this.languagesService.getLanguages().snapshotChanges().pipe(
-      map((changes: any[]) =>
-        changes.map((c: any) => ({
-          id: c.payload.doc.id,
-          ...c.payload.doc.data()
-        }))
+  ngOnInit(): void {
+    this.loadLanguages();
+  }
+
+  resetLanguage(): Language {
+    return { name: '', proficiency: '', certification: '' };
+  }
+
+  loadLanguages(): void {
+    this.langSvc.getLanguages()
+      .pipe(
+        map((actions: any[]) =>
+          actions.map(a => ({
+            id: a.payload.doc.id,
+            ...(a.payload.doc.data() as Language)
+          }))
+        )
       )
-    ).subscribe((data: Languages[]) => {
-      this.languagesList = data;
-      console.log(this.languagesList);
-    });
-  }
-
-  agregarLanguage() {
-    console.log(this.myLanguage);
-    this.languagesService.createLanguage(this.myLanguage).then(() => {
-      console.log('Created new language successfully!');
-    });
-    this.myLanguage = new Languages();
-  }
-
-  deleteLanguage(id: string) {
-    if (id) {
-      this.languagesService.deleteLanguage(id).then(() => {
-        console.log('Deleted language successfully!');
+      .subscribe((data: Language[]) => {
+        this.languages = data;
       });
-      console.log(id);
+  }
+
+  saveLanguage(): void {
+    if (this.myLanguage.id) {
+      this.langSvc
+        .updateLanguage(this.myLanguage.id, this.myLanguage)
+        .then(() => (this.myLanguage = this.resetLanguage()));
     } else {
-      console.error('ID is not defined');
+      this.langSvc
+        .createLanguage(this.myLanguage)
+        .then(() => (this.myLanguage = this.resetLanguage()));
+    }
+  }
+
+  editLanguage(lang: Language): void {
+    this.myLanguage = { ...lang };
+  }
+
+  deleteLanguage(id?: string): void {
+    if (id) {
+      this.langSvc.deleteLanguage(id);
     }
   }
 }

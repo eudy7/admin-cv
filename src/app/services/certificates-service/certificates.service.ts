@@ -1,27 +1,36 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/compat/firestore';
-import { Certificates } from '../../models/certificates/certificates.model'; // Ruta corregida
+import { Certificate } from '../../models/certificates/certificates.model';
+import { map } from 'rxjs/operators';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class CertificatesService {
-  private dbPath = '/certificates';
-  certificatesRef: AngularFirestoreCollection<Certificates>;
+  private certCol: AngularFirestoreCollection<Certificate>;
 
-  constructor(private db: AngularFirestore) {
-    this.certificatesRef = db.collection(this.dbPath);
+  constructor(private afs: AngularFirestore) {
+    this.certCol = afs.collection<Certificate>('certificates');
   }
 
-  getCertificates(): AngularFirestoreCollection<Certificates> {
-    return this.certificatesRef;
+  getCertificates() {
+    return this.certCol.snapshotChanges().pipe(
+      map(actions =>
+        actions.map(a => ({
+          id: a.payload.doc.id,
+          ...(a.payload.doc.data() as Certificate)
+        }))
+      )
+    );
   }
 
-  createCertificates(cert: Certificates): any {
-    return this.certificatesRef.add({ ...cert });
+  createCertificate(cert: Certificate) {
+    return this.certCol.add({ ...cert });
   }
 
-  deleteCertificates(id: string): Promise<void> {
-    return this.certificatesRef.doc(id).delete();
+  updateCertificate(id: string, cert: Certificate) {
+    return this.certCol.doc(id).update(cert);
+  }
+
+  deleteCertificate(id: string) {
+    return this.certCol.doc(id).delete();
   }
 }

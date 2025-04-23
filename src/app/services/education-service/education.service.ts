@@ -1,27 +1,32 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/compat/firestore';
-import { Education } from '../../models/education/education.model'; 
+import { Education } from '../../models/education/education.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EducationService {
-  private dbPath = '/education';
-  educationRef: AngularFirestoreCollection<Education>;
+  private collectionName = 'education';
+  private educationRef: AngularFirestoreCollection<Education>;
 
-  constructor(private db: AngularFirestore) {
-    this.educationRef = db.collection(this.dbPath);
+  constructor(private firestore: AngularFirestore) {
+    this.educationRef = firestore.collection<Education>(this.collectionName);
   }
 
-  getEducation(): AngularFirestoreCollection<Education> {
-    return this.educationRef;
+  getEducation() {
+    // devolvemos snapshotChanges() para obtener también el id
+    return this.educationRef.snapshotChanges();
   }
 
-  createEducation(myEducation: Education): any {
-    return this.educationRef.add({ ...myEducation });
+  createEducation(edu: Education) {
+    return this.educationRef.add({ ...edu });
   }
 
-  deleteEducation(id: string): Promise<void> {
+  updateEducation(id: string, edu: Education) {
+    return this.educationRef.doc(id).update(edu);
+  }
+
+  deleteEducation(id: string) {
     return this.educationRef.doc(id).delete();
   }
 }

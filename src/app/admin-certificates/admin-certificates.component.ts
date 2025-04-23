@@ -1,50 +1,62 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Certificate } from '../models/certificates/certificates.model';
 import { CertificatesService } from '../services/certificates-service/certificates.service';
-import { Certificates } from '../models/certificates/certificates.model';
-import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-admin-certificates',
   templateUrl: './admin-certificates.component.html',
   styleUrls: ['./admin-certificates.component.css']
 })
-export class AdminCertificatesComponent {
-  btnTxt: string = "Agregar";
-  certificatesList: Certificates[] = [];
-  myCertificate: Certificates = new Certificates(); 
+export class AdminCertificatesComponent implements OnInit {
+  certificates: Certificate[] = [];
+  myCertificate: Certificate = this.resetCertificate();
 
-  constructor(public certificatesService: CertificatesService) {
-    console.log(this.certificatesService);
+  constructor(private certSvc: CertificatesService) {}
 
-    this.certificatesService.getCertificates().snapshotChanges().pipe(
-      map((changes: any[]) =>
-        changes.map((c: any) => ({
-          id: c.payload.doc.id,
-          ...c.payload.doc.data()
-        }))
-      )
-    ).subscribe((data: Certificates[]) => {
-      this.certificatesList = data;
-      console.log(this.certificatesList);
+  ngOnInit() {
+    this.loadCertificates();
+  }
+
+  resetCertificate(): Certificate {
+    return { 
+      id: undefined, 
+      name: '', 
+      issuingOrganization: '', 
+      issueDate: '', 
+      expirationDate: '' 
+    };
+  }
+
+  loadCertificates() {
+    this.certSvc.getCertificates().subscribe(data => {
+      this.certificates = data;
     });
   }
 
-  agregarCertificates() {
-    console.log(this.myCertificate);
-    this.certificatesService.createCertificates(this.myCertificate).then(() => {
-      console.log('Created new certificate successfully!');
-    });
-    this.myCertificate = new Certificates(); // Limpiar formulario
-  }
-
-  deleteCertificates(id: string) {
-    if (id) {
-      this.certificatesService.deleteCertificates(id).then(() => {
-        console.log('Deleted certificate successfully!');
-      });
-      console.log(id);
+  saveCertificate() {
+    if (this.myCertificate.id) {
+      this.certSvc.updateCertificate(this.myCertificate.id, this.myCertificate)
+        .then(() => {
+          alert('Certificado actualizado');
+          this.myCertificate = this.resetCertificate();
+        });
     } else {
-      console.error('ID is not defined');
+      this.certSvc.createCertificate(this.myCertificate)
+        .then(() => {
+          alert('Certificado guardado');
+          this.myCertificate = this.resetCertificate();
+        });
+    }
+  }
+
+  editCertificate(cert: Certificate) {
+    this.myCertificate = { ...cert };
+  }
+
+  deleteCertificate(id?: string) {
+    if (id && confirm('¿Eliminar este certificado?')) {
+      this.certSvc.deleteCertificate(id)
+        .then(() => alert('Certificado eliminado'));
     }
   }
 }

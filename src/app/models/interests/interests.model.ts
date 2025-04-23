@@ -1,5 +1,5 @@
-export class Interests {
-  id?: string;              
-  interestName: string = ''; 
-  description: string = '';  
+export interface Interest {
+  id?: string;
+  interestName: string;
+  description: string;
 }

@@ -1,24 +1,61 @@
-<div class="container color-dark">
-  <div class="col">
-    <p>skills items</p>
-  </div>
+<div class="form-container">
+  <h2><i class="fas fa-tools"></i> Skills</h2>
+  <form>
+    <input
+      type="text"
+      placeholder="Skill Name"
+      [(ngModel)]="mySkill.skillName"
+      name="skillName"
+      class="form-control mb-3"
+    />
+
+    <input
+      type="text"
+      placeholder="Proficiency"
+      [(ngModel)]="mySkill.proficiency"
+      name="proficiency"
+      class="form-control mb-3"
+    />
+
+    <textarea
+      rows="3"
+      placeholder="Description"
+      [(ngModel)]="mySkill.description"
+      name="description"
+      class="form-control mb-4"
+    ></textarea>
+
+    <button 
+      class="btn btn-primary w-100" 
+      type="button" 
+      (click)="saveSkill()"
+    >
+      <i class="fas fa-save"></i>
+      {{ mySkill.id ? 'Actualizar' : 'Guardar' }}
+    </button>
+  </form>
 </div>
 
-<div class="container color-light">
-  <div class="col">
-    <form>
-      <input type="text" class="txt" name="skillName" placeholder="Skill Name" [(ngModel)]="mySkill.skillName"><br>
-      <input type="text" class="txt" name="proficiency" placeholder="Proficiency" [(ngModel)]="mySkill.proficiency"><br>
-      <input type="text" class="txt" name="description" placeholder="Description" [(ngModel)]="mySkill.description"><br>
-      
-      <input type="submit" class="btn" value="{{ btnTxt }}" (click)="agregarSkill()">
-    </form>
-  </div>
-
-  <div class="col">
-    <p class="life-container" *ngFor="let skill of skillsList">
-      <input *ngIf="skill.id" type="submit" class="btn" value="delete" (click)="deleteSkill(skill.id)">
-      {{ skill.skillName }} - {{ skill.proficiency }} ({{ skill.description }})
-    </p>
+<div class="card-container">
+  <div class="card" *ngFor="let skill of skillsList">
+    <div class="card-body">
+      <h3 class="card-title">{{ skill.skillName }}</h3>
+      <p><strong>Proficiency:</strong> {{ skill.proficiency }}</p>
+      <p>{{ skill.description }}</p>
+    </div>
+    <div class="button-row">
+      <button 
+        class="btn btn-warning btn-sm" 
+        (click)="editSkill(skill)"
+      >
+        <i class="fas fa-edit"></i> Editar
+      </button>
+      <button 
+        class="btn btn-danger btn-sm" 
+        (click)="deleteSkill(skill.id)"
+      >
+        <i class="fas fa-trash-alt"></i> Eliminar
+      </button>
+    </div>
   </div>
 </div>

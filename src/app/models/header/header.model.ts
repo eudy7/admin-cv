@@ -1,10 +1,10 @@
-export class Header {
+export interface Header {
   id?: string;
-  email: string = '';
-  goallife: string = '';
-  location: string = '';
-  name: string = '';
-  phoneNumber: string = '';
-  photourl: string = '';
-  socialNetwork: string = '';
+  name: string;
+  email?: string;
+  phoneNumber?: string;
+  goalLife?: string;       
+  location?: string;
+  photoUrl?: string;       
+  socialNetwork?: string;
 }

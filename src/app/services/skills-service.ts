@@ -1,28 +1,23 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/compat/firestore';
-import { Skill } from '../../models/skills/skills.model';
+import { Skill } from 'src/app/models/skills/skills.model';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class SkillsService {
   private dbPath = '/skills';
-  skillsRef: AngularFirestoreCollection<Skill>;
+  private skillsRef: AngularFirestoreCollection<Skill>;
 
   constructor(private db: AngularFirestore) {
     this.skillsRef = db.collection(this.dbPath);
   }
 
+  /** devuelve snapshotChanges para mapear id + data */
   getSkills() {
     return this.skillsRef.snapshotChanges();
   }
 
   createSkill(skill: Skill) {
     return this.skillsRef.add({ ...skill });
-  }
-
-  updateSkill(id: string, data: Skill) {
-    return this.skillsRef.doc(id).update(data);
   }
 
   deleteSkill(id: string) {

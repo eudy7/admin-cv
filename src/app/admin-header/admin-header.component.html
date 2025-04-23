@@ -1,36 +1,41 @@
-<div class="container color-dark">
-  <div class="col">
-    <p>Personal Information</p>
-  </div>
+<div class="form-container">
+  <h2><i class="fas fa-id-card"></i> Personal Information</h2>
+
+  <form>
+    <input type="text" placeholder="Full name" [(ngModel)]="myHeader.name" name="name" />
+    <input type="text" placeholder="Email" [(ngModel)]="myHeader.email" name="email" />
+    <input type="text" placeholder="Phone number" [(ngModel)]="myHeader.phoneNumber" name="phoneNumber" />
+    <input type="text" placeholder="Location" [(ngModel)]="myHeader.location" name="location" />
+    <input type="text" placeholder="Life goal" [(ngModel)]="myHeader.goalLife" name="goalLife" />
+    <input type="text" placeholder="Social network" [(ngModel)]="myHeader.socialNetwork" name="socialNetwork" />
+    <input type="text" placeholder="Photo URL" [(ngModel)]="myHeader.photoUrl" name="photoUrl" />
+
+    <button class="btn btn-primary" type="button" (click)="saveHeader()">
+      <i class="fas fa-save"></i> {{ myHeader.id ? 'Actualizar' : 'Guardar' }}
+    </button>
+  </form>
 </div>
 
-<div class="container color-light">
-  <div class="col">
-    <form>
-      <input type="text" class="txt" name="name" placeholder="Full name" [(ngModel)]="myHeader.name"><br>
-      <input type="email" class="txt" name="email" placeholder="Email" [(ngModel)]="myHeader.email"><br>
-      <input type="tel" class="txt" name="phoneNumber" placeholder="Phone number" [(ngModel)]="myHeader.phoneNumber"><br>
-      <input type="text" class="txt" name="location" placeholder="Location" [(ngModel)]="myHeader.location"><br>
-      <input type="text" class="txt" name="goallife" placeholder="Life goal" [(ngModel)]="myHeader.goallife"><br>
-      <input type="url" class="txt" name="photourl" placeholder="Photo URL" [(ngModel)]="myHeader.photourl"><br>
-      <input type="text" class="txt" name="socialNetwork" placeholder="Social network" [(ngModel)]="myHeader.socialNetwork"><br>
-      
-      <input type="submit" class="btn" value="{{ btntxt }}" (click)="saveHeader()">
-    </form>
-  </div>
-
-  <div class="col">
-    <div *ngFor="let header of headers" class="life-container">
-      <input type="submit" class="btn" value="delete" (click)="deleteHeader(header.id)">
-      
-      <div *ngIf="header.photourl">
-        <img [src]="header.photourl" alt="Profile" style="width: 100px;">
-      </div>
-      
-      <h3>{{ header.name }}</h3>
-      <p>{{ header.email }}</p>
-      <p>{{ header.phoneNumber }}</p>
-      <p>{{ header.location }}</p>
+<div class="card-container">
+  <div class="card" *ngFor="let item of headers">
+    <div class="card-header">
+      <img [src]="item.photoUrl" alt="Foto" class="profile-img" />
+    </div>
+    <div class="card-body">
+      <h3>{{ item.name }}</h3>
+      <p><strong>Email:</strong> {{ item.email }}</p>
+      <p><strong>Teléfono:</strong> {{ item.phoneNumber }}</p>
+      <p><strong>Ubicación:</strong> {{ item.location }}</p>
+      <p><strong>Objetivo:</strong> {{ item.goalLife }}</p>
+      <p><strong>Red social:</strong> {{ item.socialNetwork }}</p>
+    </div>
+    <div class="button-row">
+      <button class="btn btn-warning" (click)="editHeader(item)">
+        <i class="fas fa-edit"></i> Editar
+      </button>
+      <button class="btn btn-danger" (click)="deleteHeader(item.id)">
+        <i class="fas fa-trash-alt"></i> Eliminar
+      </button>
     </div>
   </div>
 </div>

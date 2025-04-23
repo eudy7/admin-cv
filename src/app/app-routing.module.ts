@@ -9,17 +9,19 @@ import { AdminLanguagesComponent } from './admin-languages/admin-languages.compo
 import { AdminInterestsComponent } from './admin-interests/admin-interests.component';
 
 const routes: Routes = [
-    { path: 'header', component: AdminHeaderComponent },
-    { path: 'workexperience', component: AdminWorkexperienceComponent },
-    { path: 'education', component: AdminEducationComponent },
-    { path: 'certificates', component: AdminCertificatesComponent },
-    { path: 'skills', component: AdminSkillsComponent },
-    { path: 'languages', component: AdminLanguagesComponent },
-    { path: 'interests', component: AdminInterestsComponent }
+  { path: 'header', component: AdminHeaderComponent },
+  { path: 'work-experience', component: AdminWorkexperienceComponent },
+  { path: 'education', component: AdminEducationComponent },
+  { path: 'certificates', component: AdminCertificatesComponent },
+  { path: 'skills', component: AdminSkillsComponent },
+  { path: 'languages', component: AdminLanguagesComponent },
+  { path: 'interests', component: AdminInterestsComponent },
+  { path: '', redirectTo: '/header', pathMatch: 'full' },
+  { path: '**', redirectTo: '/header' }               
 ];
 
 @NgModule({
-    imports: [RouterModule.forRoot(routes)],
-    exports: [RouterModule]
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
 })
 export class AppRoutingModule { }

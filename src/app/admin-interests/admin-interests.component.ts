@@ -1,50 +1,61 @@
-import { Component } from '@angular/core';
-import { InterestsService } from '../services/interests-service/interests.service';
-import { Interests } from '../models/interests/interests.model';
+import { Component, OnInit } from '@angular/core';
 import { map } from 'rxjs/operators';
+import { Interest } from '../models/interests/interests.model';
+import { InterestsService } from '../services/interests-service/interests.service';
 
 @Component({
   selector: 'app-admin-interests',
   templateUrl: './admin-interests.component.html',
   styleUrls: ['./admin-interests.component.css']
 })
-export class AdminInterestsComponent {
-  btnTxt: string = "Agregar";
-  interestsList: Interests[] = [];
-  myInterest: Interests = new Interests();
+export class AdminInterestsComponent implements OnInit {
+  interests: Interest[] = [];
+  myInterest: Interest = this.resetInterest();
 
-  constructor(public interestsService: InterestsService) {
-    console.log(this.interestsService);
+  constructor(private interestsSvc: InterestsService) {}
 
-    this.interestsService.getInterests().snapshotChanges().pipe(
-      map((changes: any[]) =>
-        changes.map((c: any) => ({
+  ngOnInit(): void {
+    this.loadInterests();
+  }
+
+  resetInterest(): Interest {
+    return { interestName: '', description: '' };
+  }
+
+  loadInterests() {
+    this.interestsSvc.getInterests().snapshotChanges().pipe(
+      map(changes =>
+        changes.map(c => ({
           id: c.payload.doc.id,
-          ...c.payload.doc.data()
+          ...(c.payload.doc.data() as Interest)
         }))
       )
-    ).subscribe((data: Interests[]) => {
-      this.interestsList = data;
-      console.log(this.interestsList);
-    });
+    ).subscribe(data => this.interests = data);
   }
 
-  agregarInterest() {
-    console.log(this.myInterest);
-    this.interestsService.createInterest(this.myInterest).then(() => {
-      console.log('Created new interest successfully!');
-    });
-    this.myInterest = new Interests();
-  }
-
-  deleteInterest(id: string) {
-    if (id) {
-      this.interestsService.deleteInterest(id).then(() => {
-        console.log('Deleted interest successfully!');
-      });
-      console.log(id);
+  saveInterest() {
+    if (this.myInterest.id) {
+      this.interestsSvc.updateInterest(this.myInterest.id, this.myInterest)
+        .then(() => {
+          alert('Interest actualizado');
+          this.myInterest = this.resetInterest();
+        });
     } else {
-      console.error('ID is not defined');
+      this.interestsSvc.createInterest(this.myInterest)
+        .then(() => {
+          alert('Interest guardado');
+          this.myInterest = this.resetInterest();
+        });
     }
+  }
+
+  editInterest(item: Interest) {
+    this.myInterest = { ...item };
+  }
+
+  deleteInterest(id?: string) {
+    if (!id) return;
+    this.interestsSvc.deleteInterest(id)
+      .then(() => alert('Interest eliminado'));
   }
 }

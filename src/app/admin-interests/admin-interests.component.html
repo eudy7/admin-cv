@@ -1,23 +1,38 @@
-<div class="container color-dark">
-  <div class="col">
-    <p>interests items</p>
-  </div>
+<div class="form-container">
+  <h2><i class="fas fa-heart"></i> Interests</h2>
+  <form>
+    <input
+      type="text"
+      placeholder="Interest Name"
+      [(ngModel)]="myInterest.interestName"
+      name="interestName"
+    />
+    <textarea
+      placeholder="Description"
+      [(ngModel)]="myInterest.description"
+      name="description"
+    ></textarea>
+
+    <button class="btn btn-primary" type="button" (click)="saveInterest()">
+      <i class="fas fa-save"></i>
+      {{ myInterest.id ? 'Actualizar' : 'Guardar' }}
+    </button>
+  </form>
 </div>
 
-<div class="container color-light">
-  <div class="col">
-    <form>
-      <input type="text" class="txt" name="interestName" placeholder="Interest Name" [(ngModel)]="myInterest.interestName"><br>
-      <input type="text" class="txt" name="description" placeholder="Description" [(ngModel)]="myInterest.description"><br>
-
-      <input type="submit" class="btn" value="{{ btnTxt }}" (click)="agregarInterest()">
-    </form>
-  </div>
-
-  <div class="col">
-    <p class="life-container" *ngFor="let interest of interestsList">
-      <input *ngIf="interest.id" type="submit" class="btn" value="delete" (click)="deleteInterest(interest.id)">
-      {{ interest.interestName }} - {{ interest.description }}
-    </p>
+<div class="card-container">
+  <div class="card" *ngFor="let item of interests">
+    <div class="card-body">
+      <h3>{{ item.interestName }}</h3>
+      <p>{{ item.description }}</p>
+    </div>
+    <div class="button-row">
+      <button class="btn btn-warning" (click)="editInterest(item)">
+        <i class="fas fa-edit"></i> Editar
+      </button>
+      <button class="btn btn-danger" (click)="deleteInterest(item.id)">
+        <i class="fas fa-trash-alt"></i> Eliminar
+      </button>
+    </div>
   </div>
 </div>

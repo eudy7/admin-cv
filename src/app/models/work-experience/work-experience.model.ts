@@ -1,9 +1,9 @@
-export class WorkExperience {
+export interface WorkExperience {
   id?: string;
-  startDate?: string;
-  endDate: string = '';
-  location: string = '';
-  position: string = '';
-  company: string = '';
-  accomplishments: string = '';
+  position: string;
+  company: string;
+  location: string;
+  startDate: string;
+  endDate: string;
+  accomplishments: string;
 }

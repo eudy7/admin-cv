@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { WorkExperienceService } from '../services/work-experience-service/work-experience.service';
-import { WorkExperience } from '../models/work-experience/work-experience.model';
 import { map } from 'rxjs/operators';
+import { WorkExperience } from '../models/work-experience/work-experience.model';
+import { WorkExperienceService } from '../services/work-experience/work-experience.service';
 
 @Component({
   selector: 'app-admin-workexperience',
@@ -9,42 +9,58 @@ import { map } from 'rxjs/operators';
   styleUrls: ['./admin-workexperience.component.css']
 })
 export class AdminWorkexperienceComponent {
-  itemTitle = 'Agregar';
-  btnTxt = 'Agregar';
-  myWorkExperience: WorkExperience = new WorkExperience();
-  workExperience?: WorkExperience[];
+  jobs: WorkExperience[] = [];
+  myJob: WorkExperience = this.resetJob();
 
-  constructor(public workExperienceService: WorkExperienceService) {
-    this.workExperienceService.getWorkExperience()
-      .snapshotChanges()
-      .pipe(
-        map(changes =>
-          changes.map(c => ({
-            id: c.payload.doc.id,
-            ...c.payload.doc.data()
-          }))
-        )
+  constructor(private workService: WorkExperienceService) {
+    this.loadWorkExperience();
+  }
+
+  resetJob(): WorkExperience {
+    return {
+      company: '',
+      position: '',
+      location: '',
+      startDate: '',
+      endDate: '',
+      accomplishments: ''
+    };
+  }
+
+  loadWorkExperience() {
+    this.workService.getWorkExperience().snapshotChanges().pipe(
+      map((changes: any) =>
+        changes.map((c: any) => ({ id: c.payload.doc.id, ...c.payload.doc.data() as WorkExperience }))
       )
-      .subscribe(data => {
-        this.workExperience = data;
-        console.log(this.workExperience);
-      });
-  }
-
-  AgregarJob() {
-    console.log(this.myWorkExperience);
-    this.workExperienceService.createWorkExperience(this.myWorkExperience).then(() => {
-      console.log('Created new item successfully!');
-      // Reinicia el formulario
-      this.myWorkExperience = new WorkExperience();
+    ).subscribe((data: WorkExperience[]) => {
+      this.jobs = data;
     });
   }
 
-  deleteJob(id?: string) {
-    if (!id) return;
-    this.workExperienceService.deleteWorkExperience(id).then(() => {
-      console.log('delete item successfully!');
-    });
-    console.log(id);
+  saveWorkExperience() {
+    if (this.myJob.id) {
+      this.workService.workExperienceRef.doc(this.myJob.id).update(this.myJob)
+        .then(() => {
+          alert('Experiencia actualizada');
+          this.myJob = this.resetJob();
+        });
+    } else {
+      this.workService.createWorkExperience(this.myJob)
+        .then(() => {
+          alert('Experiencia guardada');
+          this.myJob = this.resetJob();
+        });
+    }
+  }
+
+  editWorkExperience(job: WorkExperience) {
+    this.myJob = { ...job };
+  }
+
+  deleteWorkExperience(id?: string) {
+    if (id) {
+      this.workService.deleteWorkExperience(id)
+        .then(() => alert('Experiencia eliminada'));
+    }
   }
 }
