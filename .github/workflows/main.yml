@@ -29,7 +29,7 @@ jobs:
 
       - name: download, run httpd image
         run:  |
-            docker run -d --name serving_base httpd
+            docker run -d --name serving_base1 httpd
 
       - name: docker ps
         run:  |
@@ -37,15 +37,15 @@ jobs:
 
       - name: cp angular build to container
         run:  |
-            docker cp dist/admin-cv/browser/. serving_base:/usr/local/apache2/htdocs
+            docker cp dist/admin-cv/browser/. serving_base1:/usr/local/apache2/htdocs
 
       - name: list container
         run:  |
-            docker exec serving_base ls -la /usr/local/apache2/htdocs
+            docker exec serving_base1 ls -la /usr/local/apache2/htdocs
 
       - name: build custom docker image
         run: docker commit --change "ENV MODEL_NAME  ${{ secrets.MODEL_NAME}}"
-             serving_base ${{ secrets.DOCKER_USER}}/${{secrets.MODEL_NAME}}:${{github.sha}}
+             serving_base1 ${{ secrets.DOCKER_USER}}/${{secrets.MODEL_NAME}}:${{github.sha}}
 
       - name: list images
         run:  |
